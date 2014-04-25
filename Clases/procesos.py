@@ -1,9 +1,25 @@
-import sys, os.path, ctypes, ctypes.wintypes
+
 '''
 Created on 10/02/2014
 
 @author: Admin
 '''
+# -----------
+# Librerias
+# -----------
+import sys, os.path, ctypes, ctypes.wintypes
+# -----------
+# Constantes
+# -----------
+# ------------------------------
+# Clases y Funciones utilizadas
+# ------------------------------
+# ------------------------------
+# Descripcion de la Clase
+""" Clase para Manejo de Procesos de Windows"""
+# ------------------------------
+
+
 class Procesos():
     def __init__(self):
         self.Psapi = ctypes.WinDLL('Psapi.dll')
@@ -23,8 +39,7 @@ class Procesos():
         self.PROCESS_TERMINATE = 0x0001
         self.PROCESS_QUERY_INFORMATION = 0x0400
 
-        self.count = 32
-        self.hProcess = ''
+        self.count = 256
 
     def Finalizar_Proceso(self,nombre_proceso):
         "Se Finaliza el Proceso dado en la variable nombre_proceso"
@@ -57,5 +72,4 @@ class Procesos():
                     if filename == nombre_proceso:
                         return 1
                 self.CloseHandle(self.hProcess)
-       
-        return 0                 
+        return 0

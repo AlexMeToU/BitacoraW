@@ -24,7 +24,11 @@ DB_Connect = DB_Connect
 class modelo():
     def __init__(self):
         self.db = DB_Connect()
-        
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
+
+#-----------------------------------------------CONSULTAS------------------------------------------------------
+    
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
     def hora_sistema(self):
         try:
             "Se Realiza la Consulta para Obtener la Hora del Servidor"        
@@ -40,11 +44,17 @@ class modelo():
             #logging.critical("Tipo de Error:")
             #logging.critical(cad)
             return (None,"FAILED_GET_HOUR")
+        
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
+
+#-----------------------------------------------INSERCION------------------------------------------------------
+    
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
 
     def registrar_salida(self,clvUsu,hora_inicio,hora_salida,IP_Equipo):
         try:
             "Se Realiza la Consulta del Registro de Salida del Usuario"
-            query = "UPDATE TUsuAulas SET HorFinEquipo = %s WHERE clvUsuNov=%s AND HorIniEquipo= %s AND IPEquipoAula= %s"
+            query = "UPDATE TUsuAulas SET HorFinEquipo = %s WHERE clvUsuNov=%s AND HorIniEquipo=%s AND IPEquipoAula=%s"
             values = (hora_salida,clvUsu,hora_inicio,IP_Equipo)
             self.db.ejecutar(query,values)
             return "SUCCESS_QUERY_REGISTER"

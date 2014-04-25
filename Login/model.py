@@ -26,7 +26,11 @@ DB_Connect = DB_Connect
 class modelo():
     def __init__(self):
         self.db = DB_Connect()
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
 
+#-----------------------------------------------CONSULTAS------------------------------------------------------
+    
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
     def validar_usuario_alumno(self,usuario,pwd):
         try:
             "Se Realiza la Consulta para validar el Usuario Alumno Logeado"            
@@ -90,7 +94,12 @@ class modelo():
             #logging.critical("Tipo de Error:")
             #logging.critical(cad)
             return (None,"FAILED_GET_HOUR")
-        
+
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
+
+#-----------------------------------------------INSERCION------------------------------------------------------
+    
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
     def registrar_inicio(self,clvUsuario,hora_inicio,IP_Equipo):
         try:
             "Se Realiza la Consulta del Registro de Inicio del Usuario"

@@ -20,6 +20,7 @@ class Usuario():
     
     def __init__(self):
         "Los atributos del Usuario"
+        self.tipo_usuario=''
         self.graAca = ''
         self.usuario = ''
         self.pwd = ''
@@ -31,6 +32,12 @@ class Usuario():
         self.hora_inicio = ''
         self.hora_salida = ''
         self.IP_Equipo='0.0.0.0'
+        self.tipo_usuario=''
+        
+        # Elementos para Registrar la Asistencia
+        self.gpo = ''
+        self.materia = ''
+        self.clvHor= ''
 
     def Obtener_IP_Equipo (self):
         "Se Obtiene la IP del Equipo"
@@ -47,8 +54,12 @@ class Usuario():
     def obtener_usuario(self):
         return self.nombre_usuario
     
+    def obtener_tipo_usuario(self):
+        return self.tipo_usuario
+    
     def reset_usuario(self):
         "Metodo que resetea los Atributos del Usuario"
+        self.tipo_usuario=''        
         self.graAca = ''
         self.usuario = ''
         self.pwd = ''
@@ -60,3 +71,6 @@ class Usuario():
         self.hora_inicio = ''
         self.hora_salida = ''
         self.IP_Equipo='0.0.0.0'
+        self.gpo = ''
+        self.materia = ''
+        self.clvHor= ''

@@ -18,9 +18,7 @@ from datetime import datetime
 # -----------
 # Constantes
 # -----------
-apagarL = "sudo shutdown -h now"
 apagarW = "shutdown /s /f /t 01"
-
 # ------------------------------
 # Clases y Funciones utilizadas
 # ------------------------------
@@ -28,8 +26,9 @@ import model
 import Clases.usuario
 import Clases.filtro
 import Clases.procesos
+import Clases.windows
 # ------------------------------
-# Funcion principal del juego
+# Funcion principal del Programa
 """ Controlador del Login"""
 # ------------------------------
 
@@ -45,6 +44,9 @@ class controlador:
         
         # Creamos un objeto proceso para controlar los Procesos del Equipo
         self.proceso = Clases.procesos.Procesos()
+        
+        # Creamos un objeto proceso para controlar los Elementos de Windows
+        #self.win = Clases.windows.Windows()
         
         # Diccionario con los Tipos de Usuario del Sistema
         self.tipo_usuarios = {"profesor":"prof","asistente":"asist","alumno":"alum"}
@@ -99,6 +101,7 @@ class controlador:
                         if len(consulta) > 0:
                             for registro in consulta:
                                 # Guardamos la informacion recibida desde la BD
+                                self.usuario.tipo_usuario = self.tipo_usuarios[key]
                                 self.usuario.nombre = registro [1] #Nombre
                                 self.usuario.apePat = registro [2] #ApePat
                                 self.usuario.apeMat = registro [3] #ApeMat
@@ -116,6 +119,7 @@ class controlador:
                         if len(consulta) > 0:
                             for registro in consulta:
                                 # Guardamos la informacion recibida desde la BD
+                                self.usuario.tipo_usuario = self.tipo_usuarios[key]                          
                                 self.usuario.nombre = registro [1] #Nombre
                                 self.usuario.apePat = registro [2] #ApePat
                                 self.usuario.apeMat = registro [3] #ApeMat
@@ -133,6 +137,7 @@ class controlador:
                         if len(consulta) > 0:
                             for registro in consulta:
                                 # Guardamos la informacion recibida desde la BD
+                                self.usuario.tipo_usuario = self.tipo_usuarios[key]
                                 self.usuario.nombre = registro [1] #Nombre
                                 self.usuario.apePat = registro [2] #ApePat
                                 self.usuario.apeMat = registro [3] #ApeMat
@@ -160,6 +165,18 @@ class controlador:
                 #print "Usuario No Valido"
                 return "USER_NO_VALIDO"
 
+    def Habilitar_elementos_windows(self):
+        "Metodo para Mostrar Barra Menu y Boton Inicio"
+        #self.win.Show_taskbar()
+        #self.win.Show_starbutton()
+        #self.win.Enable_Shorcut()
+                
+    def Deshabilitar_elementos_windows(self):
+        "Metodo para Ocultar Barra Menu y Boton Inicio"
+        #self.win.Hide_taskbar()
+        #self.win.Hide_starbutton()
+        #self.win.Disenable_Shorcut()
+        
     def ApagarEquipo(self):
         "Click en Boton Apagar Equipo"
         os.system(apagarW)

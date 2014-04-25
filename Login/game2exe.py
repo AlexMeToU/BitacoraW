@@ -57,7 +57,7 @@ class BuildExe:
         self.project_url = "about:none"
  
         #Version of program
-        self.project_version = "1.0"
+        self.project_version = "2.0"
  
         #License of the program
         self.license = "MyApps License"
@@ -132,7 +132,7 @@ class BuildExe:
         #Use the default pygame icon, if none given
         if self.icon_file == None:
             path = os.path.split(pygame.__file__)[0]
-            self.icon_file = os.path.join(path, 'pygame.ico')
+            self.icon_file = os.path.join(path, '../src/images/libro.ico')
  
         #List all data files to add
         extra_datas = []

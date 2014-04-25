@@ -4,7 +4,23 @@ Created on 05/02/2014
 
 @author: Admin
 '''
+# -----------
+# Librerias
+# -----------
+import time
+import datetime
+# -----------
+# Constantes
+# -----------
+# ------------------------------
+# Clases y Funciones utilizadas
+# ------------------------------
 import model
+# ------------------------------
+# Funcion principal del Programa
+""" Controlador de la Interfaz del Usuario"""
+# ------------------------------
+
 
 class controlador:
     def __init__(self):
@@ -19,6 +35,10 @@ class controlador:
     def get_name_user(self):
         "Metodo que nos da el Nombre Completo del Usuario Logeado"
         return self.usuario.obtener_usuario()
+    
+    def get_user_type(self):
+        "Metodo que nos da el Tipo de Usuario Logeado"
+        return self.usuario.obtener_tipo_usuario()
 
     def reset_usuario(self):
         self.usuario.reset_usuario()
@@ -32,6 +52,7 @@ class controlador:
         if edo_consulta == "SUCCESS":
             self.usuario.hora_salida = consulta[0][0]
         return edo_consulta
+    
     """--------------------------------------Eventos-------------------------------------------------------"""
     def registrar_Salida(self):
         "Se Registra el Fin de Sesion"

@@ -75,7 +75,7 @@ class LoginView():
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
         # Supply the hWnd(Window Handle) with the window ID returned from a call to display.get_wm_info()
         # This sets the window to be on top of other windows.
-        #self.SetWindowPos(pygame.display.get_wm_info()['window'], -1, 0, 0, 0, 0, 0x0001)
+        self.SetWindowPos(pygame.display.get_wm_info()['window'], -1, 0, 0, 0, 0, 0x0001)
         pygame.display.set_caption("Login")
     
     def refresh_display(self):

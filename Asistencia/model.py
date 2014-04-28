@@ -125,6 +125,23 @@ class modelo():
             #logging.critical(cad)
             return (None,"FAILED_GET_IP_ASIST")
         
+    def fecha_calendario(self,fecAsiNov):
+        try:
+            "Se Realiza la Consulta para Obtener el Estado de una Fecha en el Calendario Escolar"
+            query = "SELECT staCalEsc, staCalEs2 FROM TEntCalEsc WHERE fecAsiNov =%s "
+            values = fecAsiNov
+            return (self.db.ejecutar(query,values),"SUCCESS")
+        except(Exception), e:
+            print "No se Pudo Realizar la Consulta en el Calendario Escolar"
+            #logging.critical('***No se Pudo Realizar la Consulta de Hora del Sistema')
+            print "Tipo de Error:"
+            print e
+            cad = str (e)
+            #logging.critical("Tipo de Error:")
+            #logging.critical(cad)
+            return (None,"FAILED_GET_DATE_CALENDAR")
+
+        
 #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
 
 #-----------------------------------------------INSERCION------------------------------------------------------

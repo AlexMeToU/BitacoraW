@@ -54,7 +54,7 @@ class UserView():
         "Metodo para cargar TextBox y Textos a la Interfaz"
         # Cargamos Item para los Mensajes al Usuario
         self.usuario_logeado = Clases.eztext.Input(x=25, y=45, font = self.fuente, maxlength=20, color=(109,110,113), prompt='')
-        self.mensaje = Clases.eztext.Input(x=150, y=110, font = self.fuente, maxlength=50, color=(255,0,0), prompt='POSIBLE MENSAJE AL USUARIO')
+        self.mensaje = Clases.eztext.Input(x=150, y=110, font = self.fuente, maxlength=50, color=(255,0,0), prompt='')
 
     def cargar_botones(self):
         "Metodo para cargar Botones a la Interfaz"

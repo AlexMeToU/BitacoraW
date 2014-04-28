@@ -193,43 +193,56 @@ class vista():
             self.mensaje_to_user.update_prompt("No se Realizo el Fin de Sesion")
         return band_access
 
-    def clase_alumno(self):
+    def clase_asistencia_alumno(self):
         "Metodo para Mostrar la Clase en la vista de Asistencia"
         self.asist_controlador.reset_asist_values()
-        clase,res = self.asist_controlador.obtener_clase_alumno()
-        if res == "FAILED_GET_GPO":
-            self.asistview.clase.update_prompt("")
-            self.asistview.mensaje.update_prompt("Grupo No Valido")
-        elif res == "FAILED_GET_CLASS":
-            self.asistview.clase.update_prompt("")
-            self.asistview.mensaje.update_prompt("Clase No Valida")
-        elif res == "FAILED_GET_MAT":
-            self.asistview.clase.update_prompt("")
-            self.asistview.mensaje.update_prompt("Materia No Valida")
-        elif res == "FAILED_GET_HOUR":
-            self.asistview.clase.update_prompt("")
-            self.asistview.mensaje.update_prompt("Hora No Valida")
-        else:
-            self.asistview.clase.update_prompt(clase)
-            self.asistview.mensaje.update_prompt(res)
-            # Obtenemos el status de la Asistencia del Alumno
-            asist,res = self.asist_controlador.obtener_asist_alum()
-            if res == "FAILED_GET_ASIST":
-                self.asistview.edo_asist.update_prompt("")
-                self.asistview.mensaje.update_prompt("Edo. de Asistencia No Valido")
+        (fecha_consulta,hora_consulta,dia,hora,minuto),edo_consulta = self.asist_controlador.Obtener_Hora_Fecha_Servidor()
+        if edo_consulta == "SUCCESS":
+            print fecha_consulta
+            print dia
+            print hora
+            clase,res = self.asist_controlador.obtener_clase_alumno(fecha_consulta,dia,hora)
+            if res == "FAILED_GET_GPO":
+                self.asistview.clase.update_prompt("")
+                self.asistview.mensaje.update_prompt("Grupo No Valido")
+            elif res == "FAILED_GET_CLASS":
+                self.asistview.clase.update_prompt("")
+                self.asistview.mensaje.update_prompt("Clase No Valida")
+            elif res == "FAILED_GET_MAT":
+                self.asistview.clase.update_prompt("")
+                self.asistview.mensaje.update_prompt("Materia No Valida")
+            elif res == "FAILED_GET_HOUR":
+                self.asistview.clase.update_prompt("")
+                self.asistview.mensaje.update_prompt("Hora No Valida")
             else:
-                self.asistview.edo_asist.update_prompt(asist)
-            
+                self.asistview.clase.update_prompt(clase)
+                self.asistview.mensaje.update_prompt(res)
+                # Obtenemos el status de la Asistencia del Alumno
+                asist,res = self.asist_controlador.obtener_asist_alum(fecha_consulta)
+                if res == "FAILED_GET_ASIST":
+                    self.asistview.edo_asist.update_prompt("")
+                    self.asistview.mensaje.update_prompt("Edo. de Asistencia No Valido")
+                else:
+                    print "Se Actualiza el EDO ASIST"
+                    self.asistview.edo_asist.update_prompt(asist)
+        else:
+            self.asistview.mensaje.update_prompt("Hora no Valida")
+
     def registrar_asistencia(self):
         "Metodo para Registrar Asistencia del Usuario"
-        asistencia,res = self.asist_controlador.registrar_asistencia()
-        if res == "FAILED_GET_IP_ASIST":
-            self.asistview.mensaje.update_prompt("IP no Valida")
-        elif res == "SIN_INSERCION":
-            print "No se Hace Insercion en DB"
-        else:
-            self.asistview.edo_asist.update_prompt(asistencia)
-            self.asistview.mensaje.update_prompt(res)
+        (fecha_consulta,hora_consulta,dia,hora,minuto),edo_consulta = self.asist_controlador.Obtener_Hora_Fecha_Servidor()
+        if edo_consulta == "SUCCESS":
+            print fecha_consulta
+            print dia
+            print hora
+            asistencia,res = self.asist_controlador.registrar_asistencia(fecha_consulta,hora_consulta,dia,hora,minuto)
+            if res == "FAILED_GET_IP_ASIST":
+                self.asistview.mensaje.update_prompt("IP no Valida")
+            elif res == "SIN_INSERCION":
+                print "No se Hace Insercion en DB"
+            else:
+                self.asistview.edo_asist.update_prompt(asistencia)
+                self.asistview.mensaje.update_prompt(res)
 
     """--------------------------------------Eventos-------------------------------------------------------"""
 
@@ -307,7 +320,7 @@ class vista():
                 if self.user_controlador.get_user_type() == "alum":
                     self.asistview.crear_interfaz()
                     self.asistview.usuario_logeado.update_prompt(self.user_controlador.get_name_user())
-                    self.clase_alumno()
+                    self.clase_asistencia_alumno()
                     band_asist = True
         return band_access,band_asist
     

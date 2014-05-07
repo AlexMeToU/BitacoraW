@@ -17,18 +17,12 @@ sys.path.append("..")
 # -----------
 # Constantes
 # -----------
-SCREEN_WIDTH = 1440
-SCREEN_HEIGHT = 900
-
-S_WIDTH = 480
-S_HEIGHT = 150
-
 # ------------------------------
 # Clases y Funciones utilizadas
 # ------------------------------
 import Clases.eztext
-import controller
-import LoginView
+import Login.controller
+import Login.LoginView
 import InterfazUsuario.controller
 import InterfazUsuario.UserView
 import Asistencia.controller
@@ -46,12 +40,12 @@ class vista():
         pygame.init()
         
         # Creamos las Instancias a los Controladores
-        self.controlador = controller.controlador()
+        self.controlador = Login.controller.controlador()
         self.user_controlador = InterfazUsuario.controller.controlador()
         self.asist_controlador = Asistencia.controller.controlador()
         
         # Creamos las Instancias a las Vistas
-        self.loginview = LoginView.LoginView()
+        self.loginview = Login.LoginView.LoginView()
         self.userview = InterfazUsuario.UserView.UserView()
         self.asistview = Asistencia.AttendanceView.AttendanceView()
         

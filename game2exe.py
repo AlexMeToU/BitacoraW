@@ -132,7 +132,7 @@ class BuildExe:
         #Use the default pygame icon, if none given
         if self.icon_file == None:
             path = os.path.split(pygame.__file__)[0]
-            self.icon_file = os.path.join(path, '../src/images/libro.ico')
+            self.icon_file = os.path.join(path, 'C:/xampp/htdocs/BitacoraW/libro.ico')
  
         #List all data files to add
         extra_datas = []

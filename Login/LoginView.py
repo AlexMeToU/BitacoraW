@@ -24,8 +24,14 @@ import Clases.eztext
 # ------------------------------
 
 class LoginView():
-    def __init__(self):
+    def __init__(self,sistemaop,modulo_asistencia):
         "Definimos los Atributos de la Clase"
+        # Guardamos el SO
+        self.sistemaop = sistemaop
+        
+        # Guardamos bandera para Habilitar Modulos
+        self.modulo_asistencia = modulo_asistencia
+        
         # Set up a variable that calls the "SetWindowPos" in user32
         self.SetWindowPos = windll.user32.SetWindowPos
         

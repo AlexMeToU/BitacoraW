@@ -23,8 +23,14 @@ import Clases.eztext
 # ------------------------------
 
 class UserView():
-    def __init__(self):
+    def __init__(self,sistemaop,modulo_asistencia):
         "Definimos los Atributos de la Clase"
+        # Guardamos el SO
+        self.sistemaop = sistemaop
+        
+        # Guardamos bandera para Habilitar Modulos
+        self.modulo_asistencia = modulo_asistencia        
+        
         # Cargamos todo lo relacionado a pygame
         pygame.init()
         
@@ -39,12 +45,18 @@ class UserView():
 
     def cargar_imagenes(self):
         "Metodo para Cargar las Imagenes a la Interfaz"
-        # Cargamos el fondo y las imagenes para la Ventana Login
-        imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
-        imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
-        imagenbCerrar = "C:/Program Files/Bitacora/src/images/Cerrar.png"
-        imagenbApagar = "C:/Program Files/Bitacora/src/images/Apagar.png"
-        
+        # Cargamos el fondo y las imagenes para la Ventana UserView
+        if self.sistemaop == "linux2":
+            imagenuser_interface = "/opt/BitacoraL/src/images/user_interface.png"
+            imagenbAsistencia = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenbCerrar = "/opt/BitacoraL/src/images/Cerrar.png"
+            imagenbApagar = "/opt/BitacoraL/src/images/Apagar.png"
+        else:
+            imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
+            imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenbCerrar = "C:/Program Files/Bitacora/src/images/Cerrar.png"
+            imagenbApagar = "C:/Program Files/Bitacora/src/images/Apagar.png"
+            
         self.user_interface = pygame.image.load(imagenuser_interface).convert()
         self.basistencia = pygame.image.load(imagenbAsistencia).convert_alpha()
         self.bapagar = pygame.image.load(imagenbApagar).convert_alpha()
@@ -78,9 +90,9 @@ class UserView():
         self.screen.blit(self.user_interface, (0,0))
         self.screen.blit(self.bsalir, self.bsalir.get_rect(center=(45, 103)))
         # Si el Usuario Logeado es un Alumno se dibuja en la pantalla el boton de Asistencia.
-        if tipo_usuario == "alum":
+        if tipo_usuario == "alum" and self.modulo_asistencia == True:
             self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(425, 40)))
         self.screen.blit(self.bapagar, self.bapagar.get_rect(center=(434, 103)))
         self.usuario_logeado.draw(self.screen)
-        self.mensaje.draw(self.screen)        
+        self.mensaje.draw(self.screen)       
         

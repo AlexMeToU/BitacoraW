@@ -23,13 +23,20 @@ import Clases.eztext
 # ------------------------------
 
 class AttendanceView():
-    def __init__(self):
+    def __init__(self,sistemaop,modulo_asistencia):
         "Definimos los Atributos de la Clase"
+        # Guardamos el SO
+        self.sistemaop = sistemaop
+        
+        # Guardamos bandera para Habilitar Modulos
+        self.modulo_asistencia = modulo_asistencia
+        
         # Cargamos todo lo relacionado a pygame
         pygame.init()
         
         # Cargamos el Tipo de Fuente a Usar
         self.fuente = pygame.font.SysFont("Arial", 12, bold=True, italic=False)
+
         
     def crear_interfaz(self):
         self.dimencionar_ventana()
@@ -39,11 +46,16 @@ class AttendanceView():
 
     def cargar_imagenes(self):
         "Metodo para Cargar las Imagenes a la Interfaz"
-        # Cargamos el fondo y las imagenes para la Ventana Login
-        imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
-        imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
-        imagenbRegresar = "C:/Program Files/Bitacora/src/images/Entrar.png"
-        
+        # Cargamos el fondo y las imagenes para la Asistencia View
+        if self.sistemaop == "linux2":        
+            imagenuser_interface = "/opt/BitacoraL/src/images/user_interface.png"
+            imagenbAsistencia = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenbRegresar = "/opt/BitacoraL/src/images/Entrar.png"
+        else:
+            imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
+            imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenbRegresar = "C:/Program Files/Bitacora/src/images/Entrar.png"
+
         self.user_interface = pygame.image.load(imagenuser_interface).convert()
         self.basistencia = pygame.image.load(imagenbAsistencia).convert_alpha()
         self.bregresar = pygame.image.load(imagenbRegresar).convert_alpha()

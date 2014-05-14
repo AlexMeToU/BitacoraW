@@ -48,7 +48,9 @@ class controlador:
         fecha_consulta = ""
         dia = ""
         hora = ""
+        minuto = ""
         edo_consulta = ""
+        hora_consulta = ""
         consulta,edo_consulta = self.modelo.hora_sistema()
         if edo_consulta == "SUCCESS":
             # Obtenemos la Fecha se solicito Boton de Registrar Asistencia
@@ -65,8 +67,6 @@ class controlador:
             hora = int(fecha.strftime('%H'))
             # 0 - 60 Min
             minuto = int(fecha.strftime('%M'))
-            print "DIA: ",dia," Hora: ",hora
-            print fecha_consulta
         return (fecha_consulta,hora_consulta,dia,hora,minuto),edo_consulta
     
     def obtener_clvhor_clvmat(self,fecha_consulta,dia,hora):
@@ -87,7 +87,6 @@ class controlador:
                     if consulta2:
                         staCalEsc = consulta2[0][0]
                         staCalEsc2 = consulta2[0][1]
-                        print "Sta1 = ",staCalEsc," Sta2 = ",staCalEsc2
                         if staCalEsc == 6 or staCalEsc == 8 or staCalEsc2 == 6 or staCalEsc2 == 8:
                             dia = 1
                             consulta,edo_consulta = self.modelo.clase_horario(self.usuario.gpo,dia,hora)        
@@ -107,6 +106,7 @@ class controlador:
         clase = ""
         mensaje = ""
         consulta,edo_consulta = self.modelo.gpo_alum(self.usuario.clvUsu)
+        print consulta
         if edo_consulta == "SUCCESS":
             if consulta:
                 for gpo in consulta:
@@ -120,6 +120,7 @@ class controlador:
                             print "clvHorNov: ",consulta2[0][0] 
                             print "clvMatNov: ",consulta2[0][1] 
                             self.usuario.clvHor = consulta2[0][0] # Clave del Horario
+                            self.usuario.hora_materia = hora
                             self.usuario.materia = consulta2[0][1] # Clave de la Materia
                             self.band_clase = True # Si hay Clase a esta Hora
                             
@@ -137,12 +138,13 @@ class controlador:
                                 print "Fallo Consulta a Nombre de Materia"
                                 clase = ""
                                 mensaje = edo_consulta
+                                self.band_clase = False
                                 return clase,mensaje
                         else:
                             clase = "NO HAY CLASE A ESTA HORA"
                             mensaje = ""
                             self.band_clase = False # No hay Clase a esta Hora
-                            return clase,mensaje
+                            #return clase,mensaje
                     else:
                         print "Fallo Consulta a Clase del Horario"
                         clase = ""
@@ -151,12 +153,11 @@ class controlador:
             else:
                 clase = "SIN GRUPO"
                 mensaje = "EL ALUMNO NO TIENE UN GRUPO ASIGNADO"
-                return clase,mensaje
         else:
             print "Fallo Consulta a Grupo del Alumno"
             clase = ""
             mensaje = edo_consulta
-            return clase,mensaje
+        return clase,mensaje
     
     def obtener_asist_alum(self,fecha_consulta):
         "Se Obtiene la Asistencia del Alumno para esa Clase"
@@ -181,29 +182,27 @@ class controlador:
         "Se Registra Asistencia del Alumno"
         # Si es True el alumno ya tiene Asistencia para esta Materia en este dia
         asistencia = ""
-        edo_insercion = ""
-        if hora == 9 or hora == 16:
-            print "Tolerancia de 10"
-            if minuto >= 0 and minuto <=10:
-                print "A"
-                status = "A"
-            else:
-                print "R"
-                status = "R"
+        edo_asistencia = ""
+            
+        if minuto >= 0 and minuto <=10:
+            print "A"
+            status = "A"
+        elif minuto >10 and minuto <=40:
+            print "R"
+            status = "R"
         else:
-            print "Tolerancia de 5"                
-            if minuto >= 0 and minuto <=5:
-                print "A"
-                status = "A"
-            else:
-                print "R"
-                status = "R"
+            print "F"
+            status = "F"
         
+        if self.band_clase ==False:
+            print "No Hay Clase a Esta Hora"
+            edo_asistencia = "SIN_CLASE"
+            return asistencia,edo_asistencia
+            
         if self.asistencia_alumno == True:
             print "EL alumno ya Tiene Asistencia para la Materia"
             asistencia = ""                
-            edo_insercion = "SIN_INSERCION"
-            return asistencia,edo_insercion                
+            edo_asistencia = "SIN_INSERCION"
         else:
             # Consultar si el Equipo ya fue usado para Registrar la Asistencia de un Alumno
             consulta,edo_consulta = self.modelo.buscar_ip_asist(self.usuario.clvHor,fecha_consulta,self.usuario.IP_Equipo)
@@ -211,30 +210,42 @@ class controlador:
                 if consulta:
                     print "La IP ya esta ocupada.Favor de registrarse en otra maquina"
                     asistencia = "Sin Asistencia"
-                    edo_insercion = "La IP ya esta ocupada.Favor de registrarse en otra maquina"
-                    return asistencia,edo_insercion                        
+                    edo_asistencia = "La IP ya esta ocupada.Favor de registrarse en otra maquina"
                 else:
                     # Hay Clase para registrar la Asistencia
                     if self.band_clase == True:
-                        edo_consulta = self.modelo.registrar_asistencia(self.usuario.clvUsu,self.usuario.clvHor,fecha_consulta,hora_consulta,status,self.usuario.IP_Equipo)
-                        if edo_consulta == "SUCCESS_QUERY_ATTENDANCE":
-                            print "Insercion hecha"
-                            consulta2,edo_consulta2 = self.obtener_asist_alum(fecha_consulta)
-                            if edo_consulta2 == "SUCCESS":
-                                asistencia = consulta2
-                                print asistencia
+                        if self.usuario.hora_materia == hora:
+                            print "En Tiempo para Registrar Asistencia"
+                            if status == "A" or status == "R": 
+                                edo_consulta = self.modelo.registrar_asistencia(self.usuario.clvUsu,self.usuario.clvHor,fecha_consulta,hora_consulta,status,self.usuario.IP_Equipo)
+                                if edo_consulta == "SUCCESS_QUERY_ATTENDANCE":
+                                    print "Insercion hecha"
+                                    consulta2,edo_consulta2 = self.obtener_asist_alum(fecha_consulta)
+                                    if edo_consulta2 == "SUCCESS":
+                                        asistencia = consulta2
+                                        edo_asistencia = edo_consulta2
+                                        print asistencia
+                                    else:
+                                        asistencia = "Error al Obtener la Asistencia"
+                                        edo_asistencia = edo_consulta2
+                                else:
+                                    print "Error en Insercion"
+                                    asistencia = "Sin Asistencia"
+                                    edo_asistencia = edo_consulta
                             else:
-                                asistencia = "Error al Obtener la Asistencia"
-                            edo_insercion = edo_consulta2
-                            return asistencia,edo_insercion
+                                print "Minutos mayores a 40 No se Registra Asistencia"
+                                asistencia = "Sin Asistencia"
+                                edo_asistencia = "ASISTENCIA_FALTA"
                         else:
-                            print "Error en Insercion"
-                        asistencia = ""
-                        edo_insercion = edo_consulta
-                        return asistencia,edo_insercion
+                            print "En Destiempo para Registrar Asistencia"
+                            asistencia = "En Destiempo para Registrar Asistencia"
+                            edo_asistencia = "ASISTENCIA_DESTIEMPO"
+                    else:
+                        print "No hay Asistencia que Marcar"
+                        asistencia = "Sin Asistencia"
+                        edo_asistencia = "SIN_INSERCION"
             else:
                 print "No se Puede Consultar la IP en la Tabla de Asistencia"
-                asistencia = ""                
-                edo_insercion = edo_consulta
-                return asistencia,edo_insercion
-        return asistencia,edo_insercion
+                asistencia = "Sin Asistencia"                
+                edo_asistencia = edo_consulta
+        return asistencia,edo_asistencia

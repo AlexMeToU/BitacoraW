@@ -36,6 +36,13 @@ class vista():
      
     def main(self):
         "Metodo Main Principal"
+        # Obtenemos el S.O Esto es para pruebas en Windows.
+        sistemaop = sys.platform
+        print sistemaop
+        
+        # Numero de Version Para los Modulos Integrados
+        self.modulo_asistencia = False
+        
         # Cargamos todo lo relacionado a pygame
         pygame.init()
         
@@ -45,9 +52,9 @@ class vista():
         self.asist_controlador = Asistencia.controller.controlador()
         
         # Creamos las Instancias a las Vistas
-        self.loginview = Login.LoginView.LoginView()
-        self.userview = InterfazUsuario.UserView.UserView()
-        self.asistview = Asistencia.AttendanceView.AttendanceView()
+        self.loginview = Login.LoginView.LoginView(sistemaop,self.modulo_asistencia)
+        self.userview = InterfazUsuario.UserView.UserView(sistemaop,self.modulo_asistencia)
+        self.asistview = Asistencia.AttendanceView.AttendanceView(sistemaop,self.modulo_asistencia)
         
         # Creamos la Ventana Login
         self.loginview.crear_interfaz()
@@ -113,10 +120,11 @@ class vista():
                     # refresh the display
                     self.userview.refresh_display()
                 else:
-                    self.asistview.surface()
-    
-                    # refresh the display
-                    self.asistview.refresh_display()
+                    if self.modulo_asistencia == True:
+                        self.asistview.surface()
+        
+                        # refresh the display
+                        self.asistview.refresh_display()
 
     def ingresar_sistema(self):
         "Metodo para El Ingreso del Usuario"
@@ -179,34 +187,30 @@ class vista():
             # Fallo Al Obtener la Hora del Servidor
             "Fallo en Realizar Registro de Fin de Sesion"
             band_access = True
-            self.mensaje_to_user.update_prompt("Hora No Valida")
+            self.userview.mensaje.update_prompt("Hora No Valida")
         elif res == "FAILED_QUERY_REGISTER":
             # Fallo en Realizar Registro de Fin de Sesion
             "Fallo en Realizar Registro de Fin de Sesion"
             band_access = True
-            self.mensaje_to_user.update_prompt("No se Realizo el Fin de Sesion")
+            self.userview.mensaje.update_prompt("No se Realizo el Fin de Sesion")
         return band_access
 
     def clase_asistencia_alumno(self):
         "Metodo para Mostrar la Clase en la vista de Asistencia"
         self.asist_controlador.reset_asist_values()
+        self.asistview.clase.update_prompt("Sin Clase")
+        self.asistview.edo_asist.update_prompt("Sin Asistencia")
+                
         (fecha_consulta,hora_consulta,dia,hora,minuto),edo_consulta = self.asist_controlador.Obtener_Hora_Fecha_Servidor()
         if edo_consulta == "SUCCESS":
-            print fecha_consulta
-            print dia
-            print hora
             clase,res = self.asist_controlador.obtener_clase_alumno(fecha_consulta,dia,hora)
             if res == "FAILED_GET_GPO":
-                self.asistview.clase.update_prompt("")
                 self.asistview.mensaje.update_prompt("Grupo No Valido")
             elif res == "FAILED_GET_CLASS":
-                self.asistview.clase.update_prompt("")
                 self.asistview.mensaje.update_prompt("Clase No Valida")
             elif res == "FAILED_GET_MAT":
-                self.asistview.clase.update_prompt("")
                 self.asistview.mensaje.update_prompt("Materia No Valida")
             elif res == "FAILED_GET_HOUR":
-                self.asistview.clase.update_prompt("")
                 self.asistview.mensaje.update_prompt("Hora No Valida")
             else:
                 self.asistview.clase.update_prompt(clase)
@@ -214,26 +218,32 @@ class vista():
                 # Obtenemos el status de la Asistencia del Alumno
                 asist,res = self.asist_controlador.obtener_asist_alum(fecha_consulta)
                 if res == "FAILED_GET_ASIST":
-                    self.asistview.edo_asist.update_prompt("")
                     self.asistview.mensaje.update_prompt("Edo. de Asistencia No Valido")
                 else:
-                    print "Se Actualiza el EDO ASIST"
                     self.asistview.edo_asist.update_prompt(asist)
         else:
             self.asistview.mensaje.update_prompt("Hora no Valida")
 
+        
     def registrar_asistencia(self):
         "Metodo para Registrar Asistencia del Usuario"
         (fecha_consulta,hora_consulta,dia,hora,minuto),edo_consulta = self.asist_controlador.Obtener_Hora_Fecha_Servidor()
         if edo_consulta == "SUCCESS":
-            print fecha_consulta
-            print dia
-            print hora
             asistencia,res = self.asist_controlador.registrar_asistencia(fecha_consulta,hora_consulta,dia,hora,minuto)
             if res == "FAILED_GET_IP_ASIST":
                 self.asistview.mensaje.update_prompt("IP no Valida")
+            elif res == "SIN_CLASE":
+                print "No se Hace Insercion en DB"
+                self.asistview.mensaje.update_prompt("No hay Clase para Registrar Asistencia")
+            elif res == "ASISTENCIA_FALTA":
+                print "No se Hace Insercion en DB"
+                self.asistview.mensaje.update_prompt("Tiempo excedido para Registrar Asistencia")
+            elif res == "ASISTENCIA_DESTIEMPO":
+                print "No se Hace Insercion en DB"
+                self.asistview.mensaje.update_prompt("La Clase ya Finalizo para Registrar Asistencia")                
             elif res == "SIN_INSERCION":
                 print "No se Hace Insercion en DB"
+                self.asistview.mensaje.update_prompt("Ya se Tiene Registrada la Asistencia")
             else:
                 self.asistview.edo_asist.update_prompt(asistencia)
                 self.asistview.mensaje.update_prompt(res)
@@ -242,17 +252,7 @@ class vista():
 
     def eventos_login(self,event,band_write,band_access):
         "Metodo para Los Eventos en la Vista Login"        
-        if event.type == KEYUP:
-            # Para Identificar cuando la tecla Caps se Desactivo
-            if event.key == pygame.K_CAPSLOCK:
-                self.loginview.usuario.Mayus = False
-                self.loginview.pwd.Mayus = False                    
-
-        elif event.type == KEYDOWN:
-            # Para Identificar cuando la tecla Caps se Activo
-            if event.key == pygame.K_CAPSLOCK:
-                self.loginview.usuario.Mayus = True
-                self.loginview.pwd.Mayus = True
+        if event.type == KEYDOWN:
             # Para iterar entre los dos TextBox de Usuario y Pwd
             if event.key == pygame.K_TAB:
                 #print "Click en tecla TAB"
@@ -296,6 +296,8 @@ class vista():
         "Metodo para Los Eventos en la Vista del Usuario"
         # Dependiendo de la zona donde se hizo click se realiza una accion 
         if event.type == pygame.MOUSEBUTTONDOWN:
+            # Borramos Mensaje para el Usuario
+            self.userview.mensaje.update_prompt("")
             x, y = event.pos
             if self.userview.salir.collidepoint(x, y) or self.userview.apagar.collidepoint(x, y):
                 # Click para Cerrar Sesion o Apagar Equipo
@@ -309,9 +311,7 @@ class vista():
                 if self.userview.apagar.collidepoint(x, y):
                     self.controlador.ApagarEquipo()
             if self.userview.asistencia.collidepoint(x, y):
-                print "Click en Boton Asistencia"
-                print "Tipo de Usuario: ",self.user_controlador.get_user_type()
-                if self.user_controlador.get_user_type() == "alum":
+                if self.user_controlador.get_user_type() == "alum" and self.modulo_asistencia == True:
                     self.asistview.crear_interfaz()
                     self.asistview.usuario_logeado.update_prompt(self.user_controlador.get_name_user())
                     self.clase_asistencia_alumno()
@@ -321,17 +321,15 @@ class vista():
     def eventos_asistview(self,event,band_asist):
         "Metodo para Los Eventos en la Vista de Asistencia"
         if event.type == pygame.MOUSEBUTTONDOWN:
+            # Borramos Mensaje para el Usuario
+            self.asistview.mensaje.update_prompt("")
             x, y = event.pos
-            print "Posicion: ",x,y
             if self.asistview.asistencia.collidepoint(x, y):
-                print "CLick en Registrar Asistencia"
                 self.registrar_asistencia()
             if self.asistview.regresar.collidepoint(x, y):
-                print "CLick en Regresar a la Interfaz del Usuario"
                 self.userview.crear_interfaz()
                 self.userview.usuario_logeado.update_prompt(self.user_controlador.get_name_user())
                 band_asist = False
-            
             return band_asist
     
     

@@ -3,6 +3,7 @@ encoding//Asistencia/AttendanceView.py=utf-8
 encoding//Asistencia/controller.py=utf-8
 encoding//Asistencia/model.py=utf-8
 encoding//Clases/DB_Connect.py=utf-8
+encoding//Clases/eztext.py=utf-8
 encoding//Clases/usuario.py=utf-8
 encoding//InterfazUsuario/controller.py=utf-8
 encoding//InterfazUsuario/model.py=utf-8

@@ -37,6 +37,7 @@ class Usuario():
         # Elementos para Registrar la Asistencia
         self.gpo = ''
         self.materia = ''
+        self.hora_materia = ''
         self.clvHor= ''
 
     def Obtener_IP_Equipo (self):
@@ -73,4 +74,5 @@ class Usuario():
         self.IP_Equipo='0.0.0.0'
         self.gpo = ''
         self.materia = ''
+        self.hora_materia = ''
         self.clvHor= ''

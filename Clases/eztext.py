@@ -31,7 +31,6 @@ class Input:
         self.prompt = self.options.prompt; self.value = ''
         self.shifted = False
         self.pause = 0
-        self.keymap = {26}
     
     def set_pos(self, x, y):
         """ Set the position to x, y """
@@ -64,7 +63,7 @@ class Input:
     def getTxt(self):
         return self.value
 
-    def update(self, events):
+    def update(self, events,sistemaop):
         """ Update the input based on passed events """
         pressed = pygame.key.get_pressed() #Add hability to hold down delete  key and delete text
         if self.pause == 3 and pressed[K_BACKSPACE]:
@@ -83,18 +82,13 @@ class Input:
                 elif event.key == K_LSHIFT or event.key == K_RSHIFT: self.shifted = True
                 elif event.key == K_SPACE: self.value += ' '
                 else:
-                    chkcod = 0
-                    #print 'keydown', event.unicode, "Code", event.scancode                    
-                    for codkey in self.keymap:
-                        if event.scancode == codkey:
-                            chkcod = 1
-                            if self.shifted==True:
-                                if event.scancode == 26:
-                                    self.value += u'¨'
-                            elif self.shifted==False:
-                                if event.scancode == 26:
-                                    self.value += u'´'
-                    if chkcod == 0 and event.scancode != 15:
-                        self.value += str (event.unicode)
+                    #print 'keydown', event.unicode, "Code", event.scancode
+                    "Se tecleo cualquier otra tecla que no es TAB ni ENTER"
+                    if sistemaop == "win32":
+                        if event.scancode != 15 and event.scancode != 28:
+                            self.value += u"" + event.unicode                            
+                    elif sistemaop == "linux2":
+                        if event.scancode != 23 and event.scancode != 36:
+                            self.value += u"" + event.unicode
 
         if len(self.value) > self.maxlength and self.maxlength >= 0: self.value = self.value[:-1]

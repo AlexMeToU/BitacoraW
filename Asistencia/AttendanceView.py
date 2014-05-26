@@ -35,7 +35,7 @@ class AttendanceView():
         pygame.init()
         
         # Cargamos el Tipo de Fuente a Usar
-        self.fuente = pygame.font.SysFont("Arial", 12, bold=True, italic=False)
+        self.fuente = pygame.font.SysFont("Arial", 14, bold=True, italic=False)
 
         
     def crear_interfaz(self):

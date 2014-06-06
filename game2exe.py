@@ -57,7 +57,7 @@ class BuildExe:
         self.project_url = "about:none"
  
         #Version of program
-        self.project_version = "2.1"
+        self.project_version = "2.2"
  
         #License of the program
         self.license = "MyApps License"

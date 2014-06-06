@@ -7,17 +7,12 @@ import MySQLdb
 
 class DB_Connect:
 
-    def __init__(self, db_host='172.16.15.1',db_port=3306 , db_user='kabl', db_pass='Asist.3',
-                 db_name='dbnovauniversitas'):
-    #def __init__(self, db_host='127.0.0.1',db_port=3306 , db_user='root', db_pass='',
-                 #db_name='kabl'):
-    #def __init__(self, db_host='187.157.139.4',db_port=3306 , db_user='kabl', db_pass='Asist.3',
-                 #db_name='dbnovauniversitas'):
-        self.db_host = db_host
-        self.db_port = db_port
-        self.db_user = db_user
-        self.db_pass = db_pass
-        self.db_name = db_name
+    def __init__(self,d):    
+        self.db_host = d[0]
+        self.db_port = int(d[1])
+        self.db_user = d[2]
+        self.db_pass = d[3]
+        self.db_name = d[4]
 
     def conectar(self):
         """Crear una conexión con la base de datos"""

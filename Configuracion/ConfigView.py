@@ -22,14 +22,11 @@ import Clases.eztext
 """ Clase para la Interfaz del Usuario"""
 # ------------------------------
 
-class UserView():
-    def __init__(self,sistemaop,modulo_asistencia):
+class ConfigView():
+    def __init__(self,sistemaop):
         "Definimos los Atributos de la Clase"
         # Guardamos el SO
         self.sistemaop = sistemaop
-        
-        # Guardamos bandera para Habilitar Modulos
-        self.modulo_asistencia = modulo_asistencia        
         
         # Cargamos todo lo relacionado a pygame
         pygame.init()
@@ -47,52 +44,52 @@ class UserView():
         "Metodo para Cargar las Imagenes a la Interfaz"
         # Cargamos el fondo y las imagenes para la Ventana UserView
         if self.sistemaop == "linux2":
-            imagenuser_interface = "/opt/BitacoraL/src/images/user_interface.png"
-            imagenbAsistencia = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenconfig_interface = "/opt/BitacoraL/src/images/config_interface.png"
+            imagenbConfiguracion = "/opt/BitacoraL/src/images/Entrar.png"
             imagenbCerrar = "/opt/BitacoraL/src/images/Cerrar.png"
-            imagenbApagar = "/opt/BitacoraL/src/images/Apagar.png"
         else:
-            imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
-            imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenconfig_interface = "C:/Program Files/Bitacora/src/images/config_interface.png"
+            imagenbConfiguracion = "C:/Program Files/Bitacora/src/images/Entrar.png"
             imagenbCerrar = "C:/Program Files/Bitacora/src/images/Cerrar.png"
-            imagenbApagar = "C:/Program Files/Bitacora/src/images/Apagar.png"
             
-        self.user_interface = pygame.image.load(imagenuser_interface).convert()
-        self.basistencia = pygame.image.load(imagenbAsistencia).convert_alpha()
-        self.bapagar = pygame.image.load(imagenbApagar).convert_alpha()
+        self.config_interface = pygame.image.load(imagenconfig_interface).convert()
+        self.bsuper_usuario = pygame.image.load(imagenbConfiguracion).convert_alpha()
+        self.badmin = pygame.image.load(imagenbConfiguracion).convert_alpha()
+        self.bbd = pygame.image.load(imagenbConfiguracion).convert_alpha()
         self.bsalir = pygame.image.load(imagenbCerrar).convert_alpha()
         
     def cargar_textbox(self):
         "Metodo para cargar TextBox y Textos a la Interfaz"
         # Cargamos Item para los Mensajes al Usuario
-        self.usuario_logeado = Clases.eztext.Input(x=25, y=45, font = self.fuente, maxlength=20, color=(109,110,113), prompt='')
-        self.mensaje = Clases.eztext.Input(x=150, y=110, font = self.fuente, maxlength=50, color=(255,0,0), prompt='')
+        self.t_super_usuario = Clases.eztext.Input(x=25, y=25, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Super')
+        self.t_admin = Clases.eztext.Input(x=25, y=65, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Administrador')
+        self.t_bd = Clases.eztext.Input(x=25, y=105, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Base de Datos')
 
     def cargar_botones(self):
         "Metodo para cargar Botones a la Interfaz"
         # Cargamos los Botones para la Interfaz
-        self.apagar = self.bapagar.get_rect(center=(434, 103))
-        self.asistencia = self.basistencia.get_rect(center=(425, 40))        
-        self.salir = self.bsalir.get_rect(center=(45, 103))
+        self.salir = self.bsalir.get_rect(center=(425, 100))
+        self.super_usuario = self.bsuper_usuario.get_rect(center=(250, 35))
+        self.admin = self.badmin.get_rect(center=(250, 75))
+        self.bd = self.bbd.get_rect(center=(250, 115))
 
     def dimencionar_ventana(self):
         "Metodo Para Dimencionar la Ventana"
         # Modo Resizable para Usuario
         self.screen = pygame.display.set_mode((S_WIDTH, S_HEIGHT), pygame.RESIZABLE)
-        pygame.display.set_caption("Usuario")
+        pygame.display.set_caption("Configuracion")
 
     def refresh_display(self):
         # refresh the display
         pygame.display.flip()
-        
-    def surface(self,tipo_usuario):
+            
+    def surface(self):
         "Metodo para Agregar los Surface a la Ventana Usuario"
-        self.screen.blit(self.user_interface, (0,0))
-        self.screen.blit(self.bsalir, self.bsalir.get_rect(center=(45, 103)))
-        # Si el Usuario Logeado es un Alumno se dibuja en la pantalla el boton de Asistencia.
-        if tipo_usuario == "alum" and self.modulo_asistencia == True:
-            self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(425, 40)))
-        self.screen.blit(self.bapagar, self.bapagar.get_rect(center=(434, 103)))
-        self.usuario_logeado.draw(self.screen)
-        self.mensaje.draw(self.screen)       
-        
+        self.screen.blit(self.config_interface, (0,0))
+        self.screen.blit(self.bsalir, self.bsalir.get_rect(center=(425, 100)))
+        self.screen.blit(self.bsuper_usuario, self.bsuper_usuario.get_rect(center=(250, 35)))
+        self.screen.blit(self.badmin, self.badmin.get_rect(center=(250, 75)))
+        self.screen.blit(self.bbd, self.bbd.get_rect(center=(250, 115)))
+        self.t_super_usuario.draw(self.screen)
+        self.t_admin.draw(self.screen)
+        self.t_bd.draw(self.screen)

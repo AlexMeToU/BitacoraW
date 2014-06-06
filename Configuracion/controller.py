@@ -1,21 +1,23 @@
 # -*- coding: utf-8 *-*
 '''
-Created on 05/02/2014
+Created on 02/06/2014
 
 @author: Admin
 '''
 # -----------
 # Librerias
 # -----------
-import time
-import datetime
+import pygame
 # -----------
 # Constantes
 # -----------
 # ------------------------------
 # Clases y Funciones utilizadas
 # ------------------------------
-import model
+import ConfigView
+import Usercontroller
+import Admincontroller
+import DBcontroller
 # ------------------------------
 # Funcion principal del Programa
 """ Controlador de la Interfaz del Usuario"""
@@ -23,40 +25,60 @@ import model
 
 
 class controlador:
-    def __init__(self):
-        # Instancia para el Modelo
-        self.modelo = model.modelo()        
+    def __init__(self,sistemaop):
+        # Guardamos el SO
+        self.sistemaop = sistemaop    
+                
+        # Instancia para la VISTA
+        self.vista = ConfigView.ConfigView(sistemaop)
+
+        # Instancia de los Controladores de cada SubVista
+        self.user_controller = Usercontroller.UserController(self.sistemaop)
+        self.admin_controller = Admincontroller.AdminController(self.sistemaop)
+        self.db_controller = DBcontroller.DBController(self.sistemaop)
+
+        # Cargamos todo lo relacionado a pygame
+        pygame.init() 
 
     """---------------------------------------Metodos-------------------------------------------------------"""
-    def set_usuario(self,user):
-        "Metodo para Instancia para los Datos del Usuario Logeado"
-        self.usuario = user
-    
-    def get_name_user(self):
-        "Metodo que nos da el Nombre Completo del Usuario Logeado"
-        return self.usuario.obtener_usuario()
-    
-    def get_user_type(self):
-        "Metodo que nos da el Tipo de Usuario Logeado"
-        return self.usuario.obtener_tipo_usuario()
+    def crear_interfaz(self):
+        self.vista.crear_interfaz()
 
-    def reset_usuario(self):
-        self.usuario.reset_usuario()
-        
-    def imprimir_datos_usuario(self):
-        self.usuario.Imprimir_valores()
-
-    def Obtener_Hora_Servidor(self):
-        "Se Verifica la Hora del Servidor"
-        consulta,edo_consulta = self.modelo.hora_sistema()
-        if edo_consulta == "SUCCESS":
-            self.usuario.hora_salida = consulta[0][0]
-        return edo_consulta
-    
     """--------------------------------------Eventos-------------------------------------------------------"""
-    def registrar_Salida(self):
-        "Se Registra el Fin de Sesion"
-        edo_hora_servidor = self.Obtener_Hora_Servidor()
-        if edo_hora_servidor == "FAILED_GET_HOUR":
-            return edo_hora_servidor
-        return self.modelo.registrar_salida(self.usuario.clvUsu,self.usuario.hora_inicio,self.usuario.hora_salida,self.usuario.IP_Equipo)
+    def eventos_config(self):
+        "Metodo para Los Eventos en la Vista del Usuario"
+        access = "Config"
+        res = ""
+        while True:
+            # Empezamos a capturar la lista de Eventos
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # Dependiendo de la zona donde se hizo click se realiza una accion 
+                    x, y = event.pos
+                    print x,y
+                    if self.vista.super_usuario.collidepoint(x, y):
+                        print "Click en Boton Config. Super Usuario"
+                        self.user_controller.crear_interfaz()
+                        self.user_controller.eventos_config()
+                        self.crear_interfaz()
+                        #self.configurar_super_usuario()
+
+                    elif self.vista.admin.collidepoint(x, y):
+                        print "Click en Boton Config. Admin"
+                        self.admin_controller.crear_interfaz()
+                        self.admin_controller.eventos_config()
+                        self.crear_interfaz()
+
+                    elif self.vista.bd.collidepoint(x, y):
+                        print "Click en Boton Config. BD"
+                        self.db_controller.crear_interfaz()
+                        self.db_controller.eventos_config()
+                        self.crear_interfaz()
+
+                    elif self.vista.salir.collidepoint(x, y):
+                        print "Click en Boton Cerrar Sesion"
+                        access = "Login"
+                        return access
+            self.vista.surface()
+            self.vista.refresh_display()

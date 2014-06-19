@@ -36,7 +36,7 @@ class AdminController:
             archivo = "C:/Program Files/Bitacora/src/files/profile2"
 
         # Configuracion del Objeto a la Instancia de la Clase
-        lista_tags = ("[user]","[pwd]")
+        lista_tags = ["[user]","[pwd]"]
         # Instancia para el Encriptador
         self.encriptador = Clases.encriptador.Encriptador(sistemaop,lista_tags,archivo)
 
@@ -63,10 +63,9 @@ class AdminController:
                     entero = ord(caracter)
                     tmp2 += chr(entero)
         
-                lista_newdata = (tmp,tmp2)
+                lista_newdata = [tmp,tmp2]
                 self.encriptador.actualizar_archivo(lista_newdata)
-                mensaje = ""
-                self.encriptador.leer_datos()                
+                mensaje = "Usuario Administrador Actualizado"
             else:
                 mensaje = "Ingresar Pwd"
         else:
@@ -100,21 +99,20 @@ class AdminController:
                     self.vista.mensaje.update_prompt("")                    
                     # Dependiendo de la zona donde se hizo click se realiza una accion
                     x, y = event.pos
-                    print x,y
-                    
                     if x>= 45 and x <= 295 and y >= 75 and y<= 100:
                         # Click en Textbox usuario
                         band_write = 1
+                    
                     elif x>= 45 and x <= 295 and y >= 125 and y<= 150:
                         # Click en Textbox pwd
                         band_write = 2
                     
                     elif self.vista.actualizar.collidepoint(x, y):
-                        print "Click en Boton Actualizar"
+                        # Click en Boton Actualizar
                         self.actualizar_datos()
 
                     elif self.vista.regresar.collidepoint(x, y):
-                        print "Click en Boton Regresar"
+                        # Click en Boton Regresar
                         return
                     
             if band_write == 1:

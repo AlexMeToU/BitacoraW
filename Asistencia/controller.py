@@ -134,9 +134,8 @@ class controlador:
         "Obtenemos la Clave del Horario y la Clave de la Materia"
         consulta = ""
         edo_consulta = ""
-
         # Buscamos La clave de la Materia en el Horario
-        consulta,edo_consulta = self.modelo.clase_horario(self.usuario.get_gpo(),dia,hora)        
+        consulta,edo_consulta = self.modelo.clase_horario(self.usuario.get_gpo(),dia,hora)
         if edo_consulta == "SUCCESS":
             if consulta:
                 # La entrada esta marcada en el Horario
@@ -167,29 +166,24 @@ class controlador:
         clase = ""
         mensaje = ""
         consulta,edo_consulta = self.modelo.gpo_alum(self.usuario.get_clvUsu())
-        print consulta
         if edo_consulta == "SUCCESS":
             if consulta:
                 for gpo in consulta:
-                    print "Gpo: ",gpo[0] # Grupo del Alumno
-                    #self.usuario.gpo = gpo[0]
+                    self.usuario.set_gpo(gpo[0])
                     # Buscamos La clave de la Materia en el Horario
                     consulta2,edo_consulta2 = self.obtener_clvhor_clvmat(fecha_consulta,dia,hora)
                     if edo_consulta2 == "SUCCESS":
                         if consulta2:
-                            print "clvHorNov: ",consulta2[0][0] 
-                            print "clvMatNov: ",consulta2[0][1] 
-                            #clvHor = consulta2[0][0] # Clave del Horario
+                            #consulta2[0][0] Clave del Horario ClvHorNov
                             #hora_materia = hora
-                            #materia = consulta2[0][1] # Clave de la Materia
-                            self.usuario.guardar_datos_clase(self,gpo[0],consulta2[0][1],hora,consulta2[0][0])
+                            #consulta2[0][1] Clave de la Materia ClvMatNov
+                            self.usuario.guardar_datos_clase(self.usuario.get_gpo(),consulta2[0][1],hora,consulta2[0][0])
                             self.band_clase = True # Si hay Clase a esta Hora
                             
                             # Buscamos el Nombre de la Materia
                             consulta3,edo_consulta3 = self.modelo.nombre_materia(consulta2[0][1])
                             if edo_consulta3 == "SUCCESS":
                                 if consulta3:
-                                    print consulta3[0][0]                                    
                                     clase = str (consulta3[0][0]) # Nombre de la Materia
                                 else:
                                     clase = str (consulta2[0][1]) # Clave de la Materia (La Clave no esta relacionada con algun Nombre)
@@ -227,7 +221,6 @@ class controlador:
         consulta,edo_consulta2 =self.modelo.buscar_asist_alum(self.usuario.get_clvHor(),fecha_consulta,self.usuario.get_clvUsu())
         if edo_consulta2 == "SUCCESS":
             if consulta:
-                print consulta
                 asistencia = "("+ str (consulta[0][5]) + ") " + str (consulta[0][4])
                 self.asistencia_alumno = True
             else:
@@ -285,7 +278,9 @@ class controlador:
             print "No Hay Clase a Esta Hora"
             edo_asistencia = "SIN_CLASE"
             return asistencia,edo_asistencia
-            
+
+        # Antes de Registrar Asistencia Corroboramos que no se haya registrado Asistencia del Alumno desde otro Equipo.
+        self.obtener_asist_alum(fecha_consulta)
         if self.asistencia_alumno == True:
             print "EL alumno ya Tiene Asistencia para la Materia"
             asistencia = ""                
@@ -295,23 +290,22 @@ class controlador:
             consulta,edo_consulta = self.modelo.buscar_ip_asist(self.usuario.get_clvHor(),fecha_consulta,self.usuario.get_IP())
             if edo_consulta == "SUCCESS":
                 if consulta:
-                    print "La IP ya esta ocupada.Favor de registrarse en otra maquina"
+                    # "La IP ya esta ocupada.Favor de registrarse en otra maquina"
                     asistencia = "Sin Asistencia"
                     edo_asistencia = "La IP ya esta ocupada.Favor de registrarse en otra maquina"
                 else:
                     # Hay Clase para registrar la Asistencia
                     if self.band_clase == True:
                         if self.usuario.hora_materia == hora:
-                            print "En Tiempo para Registrar Asistencia"
+                            # "En Tiempo para Registrar Asistencia"
                             if status == "A" or status == "R": 
                                 edo_consulta = self.modelo.registrar_asistencia(self.usuario.get_clvUsu(),self.usuario.get_clvHor(),fecha_consulta,hora_consulta,status,self.usuario.get_IP())
                                 if edo_consulta == "SUCCESS_QUERY_ATTENDANCE":
-                                    print "Insercion hecha"
+                                    # "Insercion hecha"
                                     consulta2,edo_consulta2 = self.obtener_asist_alum(fecha_consulta)
                                     if edo_consulta2 == "SUCCESS":
                                         asistencia = consulta2
                                         edo_asistencia = edo_consulta2
-                                        print asistencia
                                     else:
                                         asistencia = "Error al Obtener la Asistencia"
                                         edo_asistencia = edo_consulta2

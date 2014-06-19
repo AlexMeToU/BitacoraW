@@ -90,7 +90,7 @@ class UserView():
         self.screen.blit(self.user_interface, (0,0))
         self.screen.blit(self.bsalir, self.bsalir.get_rect(center=(45, 103)))
         # Si el Usuario Logeado es un Alumno se dibuja en la pantalla el boton de Asistencia.
-        if tipo_usuario == "alum" and self.modulo_asistencia == True:
+        if tipo_usuario == "alum" and self.modulo_asistencia == "True":
             self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(425, 40)))
         self.screen.blit(self.bapagar, self.bapagar.get_rect(center=(434, 103)))
         self.usuario_logeado.draw(self.screen)

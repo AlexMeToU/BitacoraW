@@ -89,7 +89,7 @@ class AttendanceView():
     def surface(self):
         "Metodo para Agregar los Surface a la Ventana de Asistencia"
         self.screen.blit(self.user_interface, (0,0))
-        self.screen.blit(self.bregresar, self.bregresar.get_rect(center=(425, 40)))                
+        self.screen.blit(self.bregresar, self.bregresar.get_rect(center=(425, 40)))
         self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(425, 90)))
         self.tmp.draw(self.screen)
         self.clase.draw(self.screen)

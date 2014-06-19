@@ -12,7 +12,7 @@ from pygame.locals import *
 # Constantes
 # -----------
 S_WIDTH = 480
-S_HEIGHT = 150
+S_HEIGHT = 250
 # ------------------------------
 # Clases y Funciones utilizadas
 # ------------------------------
@@ -44,11 +44,11 @@ class ConfigView():
         "Metodo para Cargar las Imagenes a la Interfaz"
         # Cargamos el fondo y las imagenes para la Ventana UserView
         if self.sistemaop == "linux2":
-            imagenconfig_interface = "/opt/BitacoraL/src/images/config_interface.png"
+            imagenconfig_interface = "/opt/BitacoraL/src/images/config_submenu.png"
             imagenbConfiguracion = "/opt/BitacoraL/src/images/Entrar.png"
             imagenbCerrar = "/opt/BitacoraL/src/images/Cerrar.png"
         else:
-            imagenconfig_interface = "C:/Program Files/Bitacora/src/images/config_interface.png"
+            imagenconfig_interface = "C:/Program Files/Bitacora/src/images/config_submenu.png"
             imagenbConfiguracion = "C:/Program Files/Bitacora/src/images/Entrar.png"
             imagenbCerrar = "C:/Program Files/Bitacora/src/images/Cerrar.png"
             
@@ -56,6 +56,7 @@ class ConfigView():
         self.bsuper_usuario = pygame.image.load(imagenbConfiguracion).convert_alpha()
         self.badmin = pygame.image.load(imagenbConfiguracion).convert_alpha()
         self.bbd = pygame.image.load(imagenbConfiguracion).convert_alpha()
+        self.bmod = pygame.image.load(imagenbConfiguracion).convert_alpha()
         self.bsalir = pygame.image.load(imagenbCerrar).convert_alpha()
         
     def cargar_textbox(self):
@@ -64,6 +65,7 @@ class ConfigView():
         self.t_super_usuario = Clases.eztext.Input(x=25, y=25, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Super')
         self.t_admin = Clases.eztext.Input(x=25, y=65, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Administrador')
         self.t_bd = Clases.eztext.Input(x=25, y=105, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Base de Datos')
+        self.t_mod = Clases.eztext.Input(x=25, y=145, font = self.fuente, maxlength=20, color=(109,110,113), prompt='Modulos')        
 
     def cargar_botones(self):
         "Metodo para cargar Botones a la Interfaz"
@@ -72,6 +74,7 @@ class ConfigView():
         self.super_usuario = self.bsuper_usuario.get_rect(center=(250, 35))
         self.admin = self.badmin.get_rect(center=(250, 75))
         self.bd = self.bbd.get_rect(center=(250, 115))
+        self.mod = self.bmod.get_rect(center=(250, 155))
 
     def dimencionar_ventana(self):
         "Metodo Para Dimencionar la Ventana"
@@ -90,6 +93,8 @@ class ConfigView():
         self.screen.blit(self.bsuper_usuario, self.bsuper_usuario.get_rect(center=(250, 35)))
         self.screen.blit(self.badmin, self.badmin.get_rect(center=(250, 75)))
         self.screen.blit(self.bbd, self.bbd.get_rect(center=(250, 115)))
+        self.screen.blit(self.bmod, self.bmod.get_rect(center=(250, 155)))
         self.t_super_usuario.draw(self.screen)
         self.t_admin.draw(self.screen)
         self.t_bd.draw(self.screen)
+        self.t_mod.draw(self.screen)

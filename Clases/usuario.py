@@ -54,6 +54,9 @@ class Usuario():
     def get_tipo_usuario(self):
         return self.tipo_usuario
     
+    def set_gpo(self,gpo):
+        self.gpo = gpo
+    
     def get_gpo(self):
         return self.gpo
     

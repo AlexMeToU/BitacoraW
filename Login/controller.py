@@ -63,8 +63,6 @@ class controlador:
         self.encriptador.actualizar_lista_tags(self.tags_db)
         
         d = self.encriptador.leer_datos()
-        for data in d:
-            print "Datos:",data
         
         # Instancia para el Modelo
         self.modelo = model.modelo(d)

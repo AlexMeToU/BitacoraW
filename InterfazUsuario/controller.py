@@ -7,6 +7,7 @@ Created on 05/02/2014
 # -----------
 # Librerias
 # -----------
+import os
 import time
 import datetime
 import pygame
@@ -144,7 +145,7 @@ class controlador:
                         elif self.vista.apagar.collidepoint(x, y) and res == "SUCCESS_QUERY_REGISTER":
                             self.ApagarEquipo()
                     elif self.vista.asistencia.collidepoint(x, y):
-                        if self.usuario.get_tipo_usuario() == "alum" and self.modulo_asistencia == True:
+                        if self.usuario.get_tipo_usuario() == "alum" and self.modulo_asistencia == "True":
                             access = "Asistencia"
                             return access
 

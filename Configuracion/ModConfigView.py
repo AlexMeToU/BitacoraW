@@ -45,18 +45,22 @@ class ModConfigView():
         # Cargamos el fondo y las imagenes para la Ventana UserView
         if self.sistemaop == "linux2":
             imagenconfig_interface = "/opt/BitacoraL/src/images/config_submenu.png"
-            imagenbConfiguracion = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenbActivar = "/opt/BitacoraL/src/images/Activar.png"
+            imagenbDesactivar = "/opt/BitacoraL/src/images/Desactivar.png"
+            imagenbRegresar = "/opt/BitacoraL/src/images/Regresar.png"
             imagenEtiqueta = "/opt/BitacoraL/src/images/Etiqueta.png"            
         else:
             imagenconfig_interface = "C:/Program Files/Bitacora/src/images/config_submenu.png"
-            imagenbConfiguracion = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenbActivar = "C:/Program Files/Bitacora/src/images/Activar.png"
+            imagenbDesactivar = "C:/Program Files/Bitacora/src/images/Desactivar.png"
+            imagenbRegresar = "C:/Program Files/Bitacora/src/images/Regresar.png"
             imagenEtiqueta = "C:/Program Files/Bitacora/src/images/Etiqueta.png"
                         
         self.config_interface = pygame.image.load(imagenconfig_interface).convert()
 
-        self.basistencia_habilitar = pygame.image.load(imagenbConfiguracion).convert_alpha()
-        self.basistencia_deshabilitar = pygame.image.load(imagenbConfiguracion).convert_alpha()
-        self.bregresar = pygame.image.load(imagenbConfiguracion).convert_alpha()        
+        self.basistencia_habilitar = pygame.image.load(imagenbActivar).convert_alpha()
+        self.basistencia_deshabilitar = pygame.image.load(imagenbDesactivar).convert_alpha()
+        self.bregresar = pygame.image.load(imagenbRegresar).convert_alpha()
         
     def cargar_textbox(self):
         "Metodo para cargar TextBox y Textos a la Interfaz"

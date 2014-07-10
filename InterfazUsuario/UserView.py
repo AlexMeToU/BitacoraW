@@ -48,12 +48,12 @@ class UserView():
         # Cargamos el fondo y las imagenes para la Ventana UserView
         if self.sistemaop == "linux2":
             imagenuser_interface = "/opt/BitacoraL/src/images/user_interface.png"
-            imagenbAsistencia = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenbAsistencia = "/opt/BitacoraL/src/images/Asistencia.png"
             imagenbCerrar = "/opt/BitacoraL/src/images/Cerrar.png"
             imagenbApagar = "/opt/BitacoraL/src/images/Apagar.png"
         else:
             imagenuser_interface = "C:/Program Files/Bitacora/src/images/user_interface.png"
-            imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenbAsistencia = "C:/Program Files/Bitacora/src/images/Asistencia.png"
             imagenbCerrar = "C:/Program Files/Bitacora/src/images/Cerrar.png"
             imagenbApagar = "C:/Program Files/Bitacora/src/images/Apagar.png"
             
@@ -72,7 +72,7 @@ class UserView():
         "Metodo para cargar Botones a la Interfaz"
         # Cargamos los Botones para la Interfaz
         self.apagar = self.bapagar.get_rect(center=(434, 103))
-        self.asistencia = self.basistencia.get_rect(center=(425, 40))        
+        self.asistencia = self.basistencia.get_rect(center=(380, 40))        
         self.salir = self.bsalir.get_rect(center=(45, 103))
 
     def dimencionar_ventana(self):
@@ -91,7 +91,7 @@ class UserView():
         self.screen.blit(self.bsalir, self.bsalir.get_rect(center=(45, 103)))
         # Si el Usuario Logeado es un Alumno se dibuja en la pantalla el boton de Asistencia.
         if tipo_usuario == "alum" and self.modulo_asistencia == "True":
-            self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(425, 40)))
+            self.screen.blit(self.basistencia, self.basistencia.get_rect(center=(380, 40)))
         self.screen.blit(self.bapagar, self.bapagar.get_rect(center=(434, 103)))
         self.usuario_logeado.draw(self.screen)
         self.mensaje.draw(self.screen)       

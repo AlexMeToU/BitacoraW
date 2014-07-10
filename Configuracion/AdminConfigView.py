@@ -45,11 +45,13 @@ class AdminConfigView():
         # Cargamos el fondo y las imagenes para la Ventana UserView
         if self.sistemaop == "linux2":
             imagenconfig_interface = "/opt/BitacoraL/src/images/config_submenu.png"
-            imagenbConfiguracion = "/opt/BitacoraL/src/images/Entrar.png"
+            imagenbGuardar = "/opt/BitacoraL/src/images/Guardar.png"
+            imagenbRegresar = "/opt/BitacoraL/src/images/Regresar.png"
             imagenEtiqueta = "/opt/BitacoraL/src/images/Etiqueta.png"            
         else:
             imagenconfig_interface = "C:/Program Files/Bitacora/src/images/config_submenu.png"
-            imagenbConfiguracion = "C:/Program Files/Bitacora/src/images/Entrar.png"
+            imagenbGuardar = "C:/Program Files/Bitacora/src/images/Guardar.png"
+            imagenbRegresar = "C:/Program Files/Bitacora/src/images/Regresar.png"
             imagenEtiqueta = "C:/Program Files/Bitacora/src/images/Etiqueta.png"
                         
         self.config_interface = pygame.image.load(imagenconfig_interface).convert()
@@ -57,8 +59,8 @@ class AdminConfigView():
         self.tag1 = pygame.image.load(imagenEtiqueta).convert_alpha()
         self.tag2 = pygame.image.load(imagenEtiqueta).convert_alpha()        
 
-        self.bactualizar = pygame.image.load(imagenbConfiguracion).convert_alpha()
-        self.bregresar = pygame.image.load(imagenbConfiguracion).convert_alpha()        
+        self.bactualizar = pygame.image.load(imagenbGuardar).convert_alpha()
+        self.bregresar = pygame.image.load(imagenbRegresar).convert_alpha()
         
     def cargar_textbox(self):
         "Metodo para cargar TextBox y Textos a la Interfaz"

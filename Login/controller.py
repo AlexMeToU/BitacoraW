@@ -135,6 +135,7 @@ class controlador:
             sys.exit(0)
         elif res == "Config":
             print "Usuario Config"
+            self.recuperar_Procesos()            
             access = "Config"
         elif res == "SUCCESS":
             # Si el Usuario es valido
@@ -156,6 +157,7 @@ class controlador:
                         # Se Realizo Correctamente el Inicio de Sesion
                         mensaje = ""
                         access = "Usuario"
+            self.recuperar_Procesos()
         elif res == "USER_NO_VALIDO":
             # Si el Usuario no es valido se manda mensaje a la Ventana
             mensaje =  "Usuario o Pwd no valido"

@@ -307,7 +307,7 @@ class controlador:
         
                     elif self.vista.apagar.collidepoint(x, y):
                         # Click en Boton Apagar
-                        self.controlador.ApagarEquipo()
+                        self.ApagarEquipo()
 
             if band_write == 1:
                 # Se ingresan datos en el TextBox del Usuario

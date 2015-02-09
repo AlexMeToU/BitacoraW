@@ -46,6 +46,10 @@ class DB_Connect:
         """Cerrar cursor"""
         self.cursor.close()
 
+    def cerrar_conexion(self):
+        """Cerrar Conexion BD"""
+        self.db.close()
+
     def ejecutar(self, query, values=''):
         """Compilar todos los procesos"""
         self.conectar()
@@ -54,4 +58,5 @@ class DB_Connect:
         self.send_commit(query)        
         self.traer_datos()
         self.cerrar_cursor()
+        self.cerrar_conexion()
         return self.rows
